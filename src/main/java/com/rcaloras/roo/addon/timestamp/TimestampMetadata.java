@@ -1,4 +1,4 @@
-package com.rcaloras.addon.timestamp;
+package com.rcaloras.roo.addon.timestamp;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;

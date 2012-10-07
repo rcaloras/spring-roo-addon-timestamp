@@ -1,4 +1,4 @@
-package com.rcaloras.addon.timestamp;
+package com.rcaloras.roo.addon.timestamp;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
