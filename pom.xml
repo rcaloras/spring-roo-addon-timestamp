@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.rcaloras.roo.addon.timestamp</groupId>
-    <artifactId>spring-roo-addon-timestamp</artifactId>
+    <artifactId>com.rcaloras.roo.addon.timestamp</artifactId>
     <packaging>bundle</packaging>
     <version>0.1.0.BUILD-SNAPSHOT</version>
-    <name>spring-roo-addon-timestamp</name>
+    <name>Spring Roo Timestamp Addon</name>
     <organization>
         <name>Ryan Caloras</name>
     </organization>
@@ -16,7 +16,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <description>Spring Roo Timestamp Add-on</description>
+    <description>Adds 'created' and 'updated' timestamps to all entites marked with @RooTimestamp</description>
     <url>https://github.com/rcaloras/spring-roo-addon-timestamp</url>
 	<scm>
 		<connection>scm:git:git@github.com:rcaloras/spring-roo-addon-timestamp.git</connection>
