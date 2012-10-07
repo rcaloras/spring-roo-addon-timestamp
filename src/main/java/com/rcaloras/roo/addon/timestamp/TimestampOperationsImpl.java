@@ -88,14 +88,12 @@ public class TimestampOperationsImpl implements TimestampOperations {
     
     /** {@inheritDoc} */
     public void setup() {
-        // Install the add-on Google code repository needed to get the annotation 
-        projectOperations.addRepository("", new Repository("roo-timestamp-addon-snapshots", "Timestamp Roo add-on snapshot repository", "https://raw.github.com/rcaloras/rcaloras-mvn-repo/master/snapshots"));
         projectOperations.addRepository("", new Repository("roo-timestamp-addon-releases", "Timestamp Roo add-on release repository", "https://raw.github.com/rcaloras/rcaloras-mvn-repo/master/releases"));
         
         List<Dependency> dependencies = new ArrayList<Dependency>();
         
         // Install the dependency on the add-on jar (
-        dependencies.add(new Dependency("com.rcaloras.roo.addon.timestamp", "com.rcaloras.roo.addon.timestamp", "0.1.0.BUILD-SNAPSHOT", DependencyType.JAR, DependencyScope.PROVIDED));
+        dependencies.add(new Dependency("com.rcaloras.roo.addon.timestamp", "com.rcaloras.roo.addon.timestamp", "0.1.0", DependencyType.JAR, DependencyScope.PROVIDED));
         
         // Install dependencies defined in external XML file
         for (Element dependencyElement : XmlUtils.findElements("/configuration/batch/dependencies/dependency", XmlUtils.getConfiguration(getClass()))) {
