@@ -30,4 +30,13 @@ public interface TimestampOperations {
      * Setup all add-on artifacts (dependencies in this case)
      */
     void setup();
+    
+    /**
+     * Rmoves all add-on artifacts (dependencies in this case) and annotations 
+     * from JavaTypes 
+     */
+    void remove();
+    
+    
+    
 }
