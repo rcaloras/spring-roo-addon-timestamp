@@ -57,7 +57,7 @@ privileged aspect Location_Roo_Timestamp {
 
 ##Timestamp Add-on Commands
 (Displayed with help timestamp from a Roo shell)
-'''bash
+```bash
 * timestamp add - Adds @RooTimestamp to target type
 * timestamp all - Adds @RooTimestamp to all types annotated with @RooJavaBean
 * timestamp remove - Remove all dependencies and removes all annotations of @RooTimestamp
