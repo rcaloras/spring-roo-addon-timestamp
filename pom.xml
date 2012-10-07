@@ -24,6 +24,15 @@
 		<url>http://github.com/rcaloras/spring-roo-addon-timestamp</url>
 	</scm>
 	<distributionManagement>
+		<repository>
+			<id>repo</id>
+			<url>https://raw.github.com/rcaloras/rcaloras-mvn-repo/master/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshot-repo</id>
+			<url>https://raw.github.com/rcaloras/rcaloras-mvn-repo/master/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 	<profiles>
 		<profile>
 			<id>githubUpload</id>
@@ -64,15 +73,20 @@
 	
 	
 	
-		<repository>
-			<id>repo</id>
-			<url>https://raw.github.com/rcaloras/rcaloras-mvn-repo/master/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshot-repo</id>
-			<url>https://raw.github.com/rcaloras/rcaloras-mvn-repo/master/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
     <properties>
         <roo.version>1.2.2.RELEASE</roo.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
