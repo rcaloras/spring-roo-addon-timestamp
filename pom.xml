@@ -4,7 +4,7 @@
     <groupId>com.rcaloras.roo.addon.timestamp</groupId>
     <artifactId>com.rcaloras.roo.addon.timestamp</artifactId>
     <packaging>bundle</packaging>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
     <name>Spring Roo Timestamp Addon</name>
     <organization>
         <name>Ryan Caloras</name>
