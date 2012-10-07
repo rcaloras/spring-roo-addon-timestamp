@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.rcaloras.addon.timestamp</groupId>
-    <artifactId>com.rcaloras.addon.timestamp</artifactId>
+    <groupId>com.rcaloras.roo.addon.timestamp</groupId>
+    <artifactId>spring-roo-addon-timestamp</artifactId>
     <packaging>bundle</packaging>
     <version>0.1.0.BUILD-SNAPSHOT</version>
-    <name>com-rcaloras-addon-timestamp</name>
+    <name>spring-roo-addon-timestamp</name>
     <organization>
-        <name>Your project/company name goes here (used in copyright and vendor information in the manifest)</name>
+        <name>Ryan Caloras</name>
     </organization>
     <licenses>
         <license>
@@ -17,7 +17,62 @@
         </license>
     </licenses>
     <description>Spring Roo Timestamp Add-on</description>
-    <url>http://www.some.company</url>
+    <url>https://github.com/rcaloras/spring-roo-addon-timestamp</url>
+	<scm>
+		<connection>scm:git:git@github.com:rcaloras/spring-roo-addon-timestamp.git</connection>
+		<developerConnection>scm:git:git@github.com:rcaloras/spring-roo-addon-timestamp.git</developerConnection>
+		<url>http://github.com/rcaloras/spring-roo-addon-timestamp</url>
+	</scm>
+	<distributionManagement>
+	<profiles>
+		<profile>
+			<id>githubUpload</id>
+			<activation>
+				<property>
+					<name>github.downloads</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-release-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>com.github.github</groupId>
+						<artifactId>downloads-maven-plugin</artifactId>
+						<version>0.4</version>
+						<configuration>
+							<description>${project.version} release of ${project.name}</description>
+							<override>true</override>
+							<includeAttached>true</includeAttached>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>upload</goal>
+								</goals>
+								<phase>install</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+	
+	
+		<repository>
+			<id>repo</id>
+			<url>https://raw.github.com/rcaloras/rcaloras-mvn-repo/master/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshot-repo</id>
+			<url>https://raw.github.com/rcaloras/rcaloras-mvn-repo/master/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
     <properties>
         <roo.version>1.2.2.RELEASE</roo.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -104,17 +159,6 @@
             <version>3.1</version>
         </dependency>
     </dependencies>
-    <scm>
-        <connection>scm:svn:https://${google.code.project.name}.googlecode.com/svn/trunk</connection>
-        <developerConnection>scm:svn:https://${google.code.project.name}.googlecode.com/svn/trunk</developerConnection>
-        <url>http://code.google.com/p/${google.code.project.name}/source/browse</url>
-    </scm>
-    <distributionManagement>
-        <repository>
-            <id>Google Code</id>
-            <url>dav:https://${google.code.project.name}.googlecode.com/svn/repo</url>
-        </repository>
-    </distributionManagement>
     <build>
         <extensions>
             <extension>
