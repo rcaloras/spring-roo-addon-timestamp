@@ -6,6 +6,7 @@ This Spring Roo timestamp add-on allows you to easily add timestamp fields for '
 
 Download the latest snapshot located in downloads here [com.rcaloras.roo.addon.timestamp-0.1.1-SNAPSHOT.jar](https://github.com/downloads/rcaloras/spring-roo-addon-timestamp/com.rcaloras.roo.addon.timestamp-0.1.1-SNAPSHOT.jar)
 
+From a Roo shell:
 ```bash
 osgi start --url file://$PATH_TO_DOWNLOAD/com.rcaloras.roo.addon.timestamp-0.1.1-SNAPSHOT.jar
 timestamp setup
@@ -54,3 +55,14 @@ privileged aspect Location_Roo_Timestamp {
 }
 ```
 
+##Timestamp Add-on Commands
+(Displayed with help timestamp from a Roo shell)
+'''bash
+* timestamp add - Adds @RooTimestamp to target type
+* timestamp all - Adds @RooTimestamp to all types annotated with @RooJavaBean
+* timestamp remove - Remove all dependencies and removes all annotations of @RooTimestamp
+* timestamp setup - Setup Timestamp addon
+```
+
+
+Any issues or questions are more than welcome. More documentaion to come.
