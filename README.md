@@ -2,6 +2,15 @@
 
 This Spring Roo timestamp add-on allows you to easily add timestamp fields for 'created' and 'updated' to your JPA entities. It provides an @RooTimestamp annotation.
 
+##Quick start to using the timestamp add-on
+
+Download the latest snapshot located in downloads here [com.rcaloras.roo.addon.timestamp-0.1.1-SNAPSHOT.jar](https://github.com/downloads/rcaloras/spring-roo-addon-timestamp/com.rcaloras.roo.addon.timestamp-0.1.1-SNAPSHOT.jar)
+
+```bash
+osgi start --url file://$PATH_TO_DOWNLOAD/com.rcaloras.roo.addon.timestamp-0.1.1-SNAPSHOT.jar
+timestamp setup
+timestamp all
+```
 ###Annotate your entities with @RooTimestamp
 
 ```java
