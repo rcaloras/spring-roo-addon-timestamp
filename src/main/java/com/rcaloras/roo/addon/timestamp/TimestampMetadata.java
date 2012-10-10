@@ -2,14 +2,17 @@ package com.rcaloras.roo.addon.timestamp;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.roo.classpath.PhysicalTypeIdentifierNamingUtils;
 import org.springframework.roo.classpath.PhysicalTypeMetadata;
+import org.springframework.roo.classpath.details.BeanInfoUtils;
 import org.springframework.roo.classpath.details.FieldMetadata;
 import org.springframework.roo.classpath.details.FieldMetadataBuilder;
+import org.springframework.roo.classpath.details.ItdTypeDetailsBuilder;
 import org.springframework.roo.classpath.details.MethodMetadata;
 import org.springframework.roo.classpath.details.MethodMetadataBuilder;
 import org.springframework.roo.classpath.details.annotations.AnnotatedJavaType;
@@ -60,13 +63,20 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
         super(identifier, aspectName, governorPhysicalTypeMetadata);
         Validate.isTrue(isValid(identifier), "Metadata identification string '" + identifier + "' does not appear to be a valid");
 
-        builder.addField(getTimestampField(CREATED_FIELD));
-		builder.addField(getTimestampField(UPDATED_FIELD));
+        FieldMetadata createdField = getTimestampField(CREATED_FIELD);
+        FieldMetadata updatedField = getTimestampField(UPDATED_FIELD);
+        builder.addField(createdField);
+		builder.addField(updatedField);
             
         // Adding a new sample method definition
 		builder.addMethod(getTimestampMethod("onCreate",CREATED_FIELD,"javax.persistence.PrePersist"));
 		builder.addMethod(getTimestampMethod("onUpdate",UPDATED_FIELD,"javax.persistence.PreUpdate"));
-        
+		
+		// Create getters and setters for created and updated
+		builder.addMethod(this.getDeclaredGetter(createdField));
+		builder.addMethod(this.getDeclaredSetter(createdField));
+		builder.addMethod(this.getDeclaredGetter(updatedField));
+		builder.addMethod(this.getDeclaredSetter(updatedField));
         // Create a representation of the desired output ITD
         itdTypeDetails = builder.build();
     }
@@ -94,8 +104,7 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
 		return fieldBuilder.build(); // Build and return a FieldMetadata instance
     	
     }
-    
-
+   
     private MethodMetadata getTimestampMethod(String methodNameStr,String field,String methodAnotation) {
 		// Specify the desired method name
 		JavaSymbolName methodName = new JavaSymbolName(methodNameStr);
@@ -153,5 +162,90 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
         builder.append("governor", governorPhysicalTypeMetadata.getId());
         builder.append("itdTypeDetails", itdTypeDetails);
         return builder.toString();
+    }
+    
+    /**
+     * Obtains the specific accessor method that is either contained within the
+     * normal Java compilation unit or will be introduced by this add-on via an
+     * ITD.
+     * 
+     * @param field that already exists on the type either directly or via
+     *            introduction (required; must be declared by this type to be
+     *            located)
+     * @return the method corresponding to an accessor, or null if not found
+     */
+    private MethodMetadataBuilder getDeclaredGetter(final FieldMetadata field) {
+        Validate.notNull(field, "Field required");
+
+        // Compute the mutator method name
+        final JavaSymbolName methodName = BeanInfoUtils
+                .getAccessorMethodName(field);
+
+        // See if the type itself declared the accessor
+        if (governorHasMethod(methodName)) {
+            return null;
+        }
+
+        // Decide whether we need to produce the accessor method (see ROO-619
+        // for reason we allow a getter for a final field)
+        if (!Modifier.isTransient(field.getModifier())
+                && !Modifier.isStatic(field.getModifier())) {
+            final InvocableMemberBodyBuilder bodyBuilder = new InvocableMemberBodyBuilder();
+            bodyBuilder.appendFormalLine("return this."
+                    + field.getFieldName().getSymbolName() + ";");
+
+            return new MethodMetadataBuilder(getId(), Modifier.PUBLIC,
+                    methodName, field.getFieldType(), bodyBuilder);
+        }
+
+        return null;
+    }
+
+    /**
+     * Obtains the specific mutator method that is either contained within the
+     * normal Java compilation unit or will be introduced by this add-on via an
+     * ITD.
+     * 
+     * @param field that already exists on the type either directly or via
+     *            introduction (required; must be declared by this type to be
+     *            located)
+     * @return the method corresponding to a mutator, or null if not found
+     */
+    private MethodMetadataBuilder getDeclaredSetter(final FieldMetadata field) {
+        Validate.notNull(field, "Field required");
+
+        // Compute the mutator method name
+        final JavaSymbolName methodName = BeanInfoUtils
+                .getMutatorMethodName(field);
+
+        // Compute the mutator method parameters
+        final JavaType parameterType = field.getFieldType();
+
+        // See if the type itself declared the mutator
+        if (governorHasMethod(methodName, parameterType)) {
+            return null;
+        }
+
+        // Compute the mutator method parameter names
+        final List<JavaSymbolName> parameterNames = Arrays.asList(field
+                .getFieldName());
+
+        // Decide whether we need to produce the mutator method (disallowed for
+        // final fields as per ROO-36)
+        if (!Modifier.isTransient(field.getModifier())
+                && !Modifier.isStatic(field.getModifier())
+                && !Modifier.isFinal(field.getModifier())) {
+            final InvocableMemberBodyBuilder bodyBuilder = new InvocableMemberBodyBuilder();
+            bodyBuilder.appendFormalLine("this."
+                    + field.getFieldName().getSymbolName() + " = "
+                    + field.getFieldName().getSymbolName() + ";");
+
+            return new MethodMetadataBuilder(getId(), Modifier.PUBLIC,
+                    methodName, JavaType.VOID_PRIMITIVE,
+                    AnnotatedJavaType.convertFromJavaTypes(parameterType),
+                    parameterNames, bodyBuilder);
+        }
+
+        return null;
     }
 }
