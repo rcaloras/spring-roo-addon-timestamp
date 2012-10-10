@@ -51,6 +51,17 @@ privileged aspect Location_Roo_Timestamp {
     public void Location.onUpdate() {
         this.updated=new java.util.Date();
     }
+
+    //Also adds Mutators and Accessors for created and updated
+    public Date Location.getCreated() {
+        return this.created;
+    }
+    
+    public void Location.setCreated(Date created) {
+        this.created = created;
+    }
+
+    ....
     
 }
 ```
