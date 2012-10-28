@@ -260,8 +260,8 @@
                         <Bundle-Copyright>Copyright ${project.organization.name}. All Rights Reserved.</Bundle-Copyright>
                         <Bundle-DocURL>${project.url}</Bundle-DocURL>
                     </instructions>
-<!--                     <remoteOBR>true</remoteOBR> -->
-<!--                     <bundleUrl>httppgp://${google.code.project.name}.googlecode.com/svn/repo/${repo.folder}/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}.jar</bundleUrl> -->
+                     <remoteOBR>true</remoteOBR>
+                     <bundleUrl>httppgp://github.com/rcaloras/rcaloras-mvn-repo/releases/${repo.folder}/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}.jar</bundleUrl>
                 </configuration>
             </plugin>
             <plugin>
