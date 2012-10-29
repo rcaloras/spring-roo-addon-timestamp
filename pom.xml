@@ -72,22 +72,7 @@
 	</profiles>
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-    <properties>
+	<properties>
         <roo.version>1.2.2.RELEASE</roo.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <google.code.project.name>${project.name}</google.code.project.name>
@@ -174,6 +159,50 @@
         </dependency>
     </dependencies>
     <build>
+        <pluginManagement>
+            <plugins>
+    <plugin>
+      <groupId>org.eclipse.m2e</groupId>
+      <artifactId>lifecycle-mapping</artifactId>
+      <version>1.0.0</version>
+      <configuration>
+        <lifecycleMappingMetadata>
+          <pluginExecutions>
+            <pluginExecution>
+              <pluginExecutionFilter>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <versionRange>[2.0,)</versionRange>
+                <goals>
+                  <goal>copy-dependencies</goal>
+                </goals>
+              </pluginExecutionFilter>
+              <action>
+                <execute />
+              </action>
+            </pluginExecution>
+          </pluginExecutions>
+        </lifecycleMappingMetadata>
+      </configuration>
+    </plugin>
+  </plugins>
+</pluginManagement>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
@@ -181,7 +210,13 @@
                 <version>1.0-beta-6</version>
             </extension>
         </extensions>
-        <plugins>
+        
+        
+        
+        
+        
+        
+        <plugins>            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
