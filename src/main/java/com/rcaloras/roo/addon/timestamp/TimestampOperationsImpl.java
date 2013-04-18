@@ -169,7 +169,7 @@ public class TimestampOperationsImpl implements TimestampOperations {
 		
 		Properties properties = new Properties();
 		try {
-			properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("/project.properties"));
+			properties.load(this.getClass().getResourceAsStream("/project.properties"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
