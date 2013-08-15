@@ -25,9 +25,9 @@ import org.springframework.roo.model.JavaType;
 import org.springframework.roo.project.LogicalPath;
 
 /**
- * This type produces metadata for a new ITD. It uses an {@link ItdTypeDetailsBuilder} provided by 
+ * This type produces metadata for a new ITD. It uses an {@link ItdTypeDetailsBuilder} provided by
  * {@link AbstractItdTypeDetailsProvidingMetadataItem} to register a field in the ITD and a new method.
- * 
+ *
  * @since 1.1.0
  */
 public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
@@ -35,14 +35,14 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
     // Constants
     private static final String PROVIDES_TYPE_STRING = TimestampMetadata.class.getName();
     private static final String PROVIDES_TYPE = MetadataIdentificationUtils.create(PROVIDES_TYPE_STRING);
-    
+
     private static final String CREATED_FIELD="created";
 	private static final String UPDATED_FIELD="updated";
 
     public static final String getMetadataIdentiferType() {
         return PROVIDES_TYPE;
     }
-    
+
     public static final String createIdentifier(JavaType javaType, LogicalPath path) {
         return PhysicalTypeIdentifierNamingUtils.createIdentifier(PROVIDES_TYPE_STRING, javaType, path);
     }
@@ -58,7 +58,7 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
     public static boolean isValid(String metadataIdentificationString) {
         return PhysicalTypeIdentifierNamingUtils.isValid(PROVIDES_TYPE_STRING, metadataIdentificationString);
     }
-    
+
     public TimestampMetadata(String identifier, JavaType aspectName, PhysicalTypeMetadata governorPhysicalTypeMetadata) {
         super(identifier, aspectName, governorPhysicalTypeMetadata);
         Validate.isTrue(isValid(identifier), "Metadata identification string '" + identifier + "' does not appear to be a valid");
@@ -67,11 +67,10 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
         FieldMetadata updatedField = getTimestampField(UPDATED_FIELD);
         builder.addField(createdField);
 		builder.addField(updatedField);
-            
+
         // Adding a new sample method definition
-		builder.addMethod(getTimestampMethod("onCreate",CREATED_FIELD,"javax.persistence.PrePersist"));
-		builder.addMethod(getTimestampMethod("onUpdate",UPDATED_FIELD,"javax.persistence.PreUpdate"));
-		
+		builder.addMethod(getTimestampMethod());
+
 		// Create getters and setters for created and updated
 		builder.addMethod(this.getDeclaredGetter(createdField));
 		builder.addMethod(this.getDeclaredSetter(createdField));
@@ -80,10 +79,10 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
         // Create a representation of the desired output ITD
         itdTypeDetails = builder.build();
     }
-    
-    
+
+
     private FieldMetadata getTimestampField(String fieldName){
-    	
+
     	List<AnnotationMetadataBuilder> list = new ArrayList<AnnotationMetadataBuilder>();
 		AnnotationMetadataBuilder dateTimeFormat=new AnnotationMetadataBuilder(new JavaType("org.springframework.format.annotation.DateTimeFormat"));
 		dateTimeFormat.addStringAttribute("style", "M-");
@@ -94,7 +93,7 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
 		list.add(temporal);
 		list.add(dateTimeFormat);
 
-		// Using the FieldMetadataBuilder to create the field definition. 
+		// Using the FieldMetadataBuilder to create the field definition.
 		FieldMetadataBuilder fieldBuilder = new FieldMetadataBuilder(getId(), // Metadata ID provided by supertype
 			Modifier.PRIVATE, // Using package protection rather than private
 			list, // No annotations for this field
@@ -102,12 +101,13 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
 			new JavaType("java.util.Date")); // Field type
 
 		return fieldBuilder.build(); // Build and return a FieldMetadata instance
-    	
+
     }
-   
-    private MethodMetadata getTimestampMethod(String methodNameStr,String field,String methodAnotation) {
+
+    private MethodMetadata getTimestampMethod() {
+
 		// Specify the desired method name
-		JavaSymbolName methodName = new JavaSymbolName(methodNameStr);
+		JavaSymbolName methodName = new JavaSymbolName("onUpdate");
 
 		// Check if a method with the same signature already exists in the target type
 		MethodMetadata method = methodExists(methodName, new ArrayList<AnnotatedJavaType>());
@@ -116,10 +116,13 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
 			return method;
 		}
 
-		AnnotationMetadataBuilder prePersists=new AnnotationMetadataBuilder(new JavaType(methodAnotation));
-		// Define method annotations (none in this case)
+		AnnotationMetadataBuilder prePersists=new AnnotationMetadataBuilder(new JavaType("javax.persistence.PrePersist"));
+		AnnotationMetadataBuilder preUpdate=new AnnotationMetadataBuilder(new JavaType("javax.persistence.PreUpdate"));
+
+		// Define method annotations
 		List<AnnotationMetadataBuilder> annotations = new ArrayList<AnnotationMetadataBuilder>();
 		annotations.add(prePersists);
+		annotations.add(preUpdate);
 
 		// Define method throws types (none in this case)
 		List<JavaType> throwsTypes = new ArrayList<JavaType>();
@@ -132,7 +135,10 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
 
 		// Create the method body
 		InvocableMemberBodyBuilder bodyBuilder = new InvocableMemberBodyBuilder();
-		bodyBuilder.appendFormalLine("this."+field+"=new java.util.Date();");
+		bodyBuilder.appendFormalLine("if (this.created == null) {");
+		bodyBuilder.appendFormalLine("    this.created = new java.util.Date();");
+		bodyBuilder.appendFormalLine("}");
+		bodyBuilder.appendFormalLine("this.updated = new java.util.Date();");
 
 		// Use the MethodMetadataBuilder for easy creation of MethodMetadata
 		MethodMetadataBuilder methodBuilder = new MethodMetadataBuilder(getId(), Modifier.PUBLIC, methodName, JavaType.VOID_PRIMITIVE, parameterTypes, parameterNames, bodyBuilder);
@@ -140,7 +146,7 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
 		methodBuilder.setThrowsTypes(throwsTypes);
 		return methodBuilder.build(); // Build and return a MethodMetadata instance
 	}
-        
+
     private MethodMetadata methodExists(JavaSymbolName methodName, List<AnnotatedJavaType> paramTypes) {
         // We have no access to method parameter information, so we scan by name alone and treat any match as authoritative
         // We do not scan the superclass, as the caller is expected to know we'll only scan the current class
@@ -152,8 +158,9 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
         }
         return null;
     }
-    
-    public String toString() {
+
+    @Override
+	public String toString() {
         final ToStringBuilder builder = new ToStringBuilder(this);
         builder.append("identifier", getId());
         builder.append("valid", valid);
@@ -163,12 +170,12 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
         builder.append("itdTypeDetails", itdTypeDetails);
         return builder.toString();
     }
-    
+
     /**
      * Obtains the specific accessor method that is either contained within the
      * normal Java compilation unit or will be introduced by this add-on via an
      * ITD.
-     * 
+     *
      * @param field that already exists on the type either directly or via
      *            introduction (required; must be declared by this type to be
      *            located)
@@ -205,7 +212,7 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
      * Obtains the specific mutator method that is either contained within the
      * normal Java compilation unit or will be introduced by this add-on via an
      * ITD.
-     * 
+     *
      * @param field that already exists on the type either directly or via
      *            introduction (required; must be declared by this type to be
      *            located)

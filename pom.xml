@@ -73,7 +73,7 @@
 	
 	
 	<properties>
-        <roo.version>1.2.3.RELEASE</roo.version>
+        <roo.version>1.2.4.RELEASE</roo.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <google.code.project.name>${project.name}</google.code.project.name>
         <repo.folder>com/rcaloras/addon/timestamp</repo.folder>
@@ -178,7 +178,7 @@
                 </goals>
               </pluginExecutionFilter>
               <action>
-                <execute />
+                <execute/>
               </action>
             </pluginExecution>
           </pluginExecutions>

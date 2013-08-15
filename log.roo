@@ -1,3 +1,5 @@
 // Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-10-06 23:42:12
 addon create advanced --topLevelPackage com.rcaloras.addon.timestamp --description "Spring Roo Timestamp Add-on"
 // Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2012-10-06 23:42:12
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2013-08-14 20:25:16
+hint
