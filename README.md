@@ -4,7 +4,7 @@ This Spring Roo timestamp add-on allows you to easily add timestamp fields for '
 
 ##Quick start to using the timestamp add-on
 
-Download the latest snapshot located in downloads here [com.rcaloras.roo.addon.timestamp-0.1.3-SNAPSHOT.jar](http://bit.ly/15h9bAo) Or you can grab releases from the [Maven Repo](https://github.com/rcaloras/rcaloras-mvn-repo/tree/master/releases/com/rcaloras/roo/addon/timestamp/com.rcaloras.roo.addon.timestamp)
+Download the latest snapshot located in downloads here [com.rcaloras.roo.addon.timestamp-0.1.3-SNAPSHOT.jar](http://bit.ly/126b4NY) Or you can grab releases from the [Maven Repo](https://github.com/rcaloras/rcaloras-mvn-repo/tree/master/releases/com/rcaloras/roo/addon/timestamp/com.rcaloras.roo.addon.timestamp)
 
 From a Roo shell:
 ```bash
