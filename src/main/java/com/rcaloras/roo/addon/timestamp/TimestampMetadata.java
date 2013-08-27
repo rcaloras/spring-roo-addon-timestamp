@@ -85,7 +85,7 @@ public class TimestampMetadata extends AbstractItdTypeDetailsProvidingMetadataIt
 
     	List<AnnotationMetadataBuilder> list = new ArrayList<AnnotationMetadataBuilder>();
 		AnnotationMetadataBuilder dateTimeFormat=new AnnotationMetadataBuilder(new JavaType("org.springframework.format.annotation.DateTimeFormat"));
-		dateTimeFormat.addStringAttribute("style", "M-");
+		dateTimeFormat.addStringAttribute("pattern", "yyyy-MM-dd HH:mm:ss");
 
 		AnnotationMetadataBuilder temporal=new AnnotationMetadataBuilder(new JavaType("javax.persistence.Temporal"));
 		temporal.addEnumAttribute("value", "javax.persistence.TemporalType", "TIMESTAMP");
